@@ -16,7 +16,7 @@ Optional arguments:
 --graphviz      flag for graphviz output [default: false]
 ```
 
-![example output](https://github.com/steven-varga/h5rnd/images/tree.svg)
+![example output](images/tree.svg)
 
 # requirements:
 

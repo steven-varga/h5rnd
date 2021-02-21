@@ -4,7 +4,7 @@ CXXFLAGS =  -std=c++17 -O3  -I./include
 LIBS = -lprofiler -lhdf5  -lz -ldl -lm 
 
 test: rndt 
-	./rndt --graphviz -o tree.gv -d 70 -g 46
+	./rndt --graphviz -o tree.gv -d 30 -g 11
 	dot -Tsvg tree.gv -o tree.svg
 	xviewer -w  tree.svg
 	#./rndt --hdf5 -o tree.h5 -d 70 -g 46
