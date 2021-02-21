@@ -22,8 +22,13 @@ Optional arguments:
 
 - [h5cpp v1.10.6-2](http://h5cpp.org) included with this project
 - [argparse](https://github.com/p-ranav/argparse)  included with this project
-- HDF5 C base library, no high level API or beuilt in C++ API is needed
+- HDF5 C base library, no high level API or beuilt in C++ API is needed works with:  `serial|parallel`
 - c++17 or higher compiler
+
+**visualization:**
+
+- graphviz
+- xviewer
 
 # bugs
 use the included/shipped **h5cpp** header files until I update the original **h5cpp** distribution with `h5::gr_t` support for `read|write|create` operators.
