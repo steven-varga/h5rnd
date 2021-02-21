@@ -10,7 +10,7 @@ copyright steven varga, 2021, feb 18, Toronto, ON, Canada;  MIT license
 #include <queue>
 #include <algorithm>
 #include <fstream>
-
+#include <iterator>
 
 using edge_t = std::vector<std::pair<unsigned,unsigned>>;
 using degree_t = std::vector<unsigned>;
@@ -39,7 +39,18 @@ edge_t prufer2edges(const degree_t& a){
 
     return T;
 }
+/*
+void topoolical_sort(const edge_t& edges){
+    edge_t L, S;
+    std::copy(std::begin(edges), std::end(edges), std::begin(S));
 
+    for(auto e: S){
+        L.push_back(e);
+        for 
+
+    }
+}
+*/
 
 int main(int argc, char **argv) {
     argparse::ArgumentParser arg("rndt", "0.0.1");
@@ -70,41 +81,50 @@ int main(int argc, char **argv) {
         // initial conditions: 
         std::fill(std::begin(is_group), std::end(is_group), false);
         std::generate(std::begin(prufer_sequence), std::end(prufer_sequence), [&]() -> int {
-            auto i = draw(src); is_group[i] = true; return i;
+            return draw(src);
         });
         auto edges = prufer2edges(prufer_sequence);
+        for( auto e: edges) is_group[e.first] = true; // color all non-leaf nodes
         int root = edges.back().first;
         
         path = arg.get<std::string>("--output");
         /* GRAPHVIZ OUTPUT */
         if(arg.get<bool>("--graphviz")) {
-            std::ofstream os(path, std::ios::out | std::ios::trunc);
+            std::string gv_path = path;
+            if(arg.get<bool>("--hdf5"))
+                gv_path = path.substr(0, path.find_last_of('.')) + ".gv";
+            
+            std::ofstream os(gv_path, std::ios::out | std::ios::trunc);
             os << "digraph prufer {" << std::endl;
             os << "\tnode [shape=note color=orange fontcolor=purple fontname=\"times bold\" fillcolor=violet width=0.01 height=0.1 fontsize=9.0 labelloc=b style=bold];\n";
             std::cout << "root: " << root <<"\n\n";
-            for(int i=0; i < ngroups + 2; i++)
-                os <<"\t" << i << " [shape=" << ( i != root  ? "folder color=purple" 
+            for(int i=0; i < is_group.size(); i++)
+                if(is_group[i]) os <<"\t" << i << " [shape=" << ( i != root  ? "folder color=purple" 
                     : "cylinder color=purple fillcolor=orange style=filled label=HDF5") <<" weight=2.0 width=0.75 height=0.5 fontsize=14.0 labelloc=c]\n";
             os << std::endl << std::endl;
-            for(auto e: edges){
+            for(auto e: edges)
                 os << e.first << " -> " << e.second <<";" << std::endl;
-            }
+            
             os << "}" <<std::endl;
-        } else if(arg.get<bool>("--hdf5")) {
+        } 
+        if(arg.get<bool>("--hdf5")) {
         /* HDF5 OUTPUT */
             h5::fd_t fd = h5::create(path, H5F_ACC_TRUNC);
             auto names = h5::utils::get_test_data<std::string>(prufer_sequence.size()+2);
-            std::vector<h5::gr_t> gr(ngroups + 2);
+            std::vector<h5::gr_t> gr(is_group.size());
             std::vector<double> dataset(1000);
-
-            for(auto v: edges){
+            gr[root] = h5::gr_t{H5Gopen(fd, "/", H5P_DEFAULT)}; // using H5CPP RAII
+            for(auto it = std::end(edges); it != std::begin(edges); ) {
+                it--;
                 // we can use CAPI routins to test, or just compare gr_t >= 0
-                if( is_group[v.second] && !H5Iis_valid(gr[v.second])) 
-                    gr[v.second] = h5::gr_t{H5Gcreate(gr[v.first], names[v.second].data(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT)};
+                if( is_group[it->second] && !H5Iis_valid(gr[it->second])) 
+                    gr[it->second] = h5::gr_t{H5Gcreate(gr[it->first], names[it->second].data(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT)};
                 else // it is a leaf node, create a dataset
                     ;//h5::write()
-                std::cout <<gr[v.first] <<" " << names[v.first] <<" " << names[v.second] <<"\n";
+                std::cout <<" " << it->first <<" "<< it->second << "} " << gr[it->first] <<" " << names[it->first] <<" " << names[it->second] <<"\n";
+            
             }
+            
         }
 
         

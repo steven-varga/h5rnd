@@ -19,7 +19,7 @@ namespace h5 {
 	* \par_lcpl \par_dcpl \par_dapl  \tpar_T \returns_ds
  	*/ 
 	template<class T, class... args_t>
-	h5::ds_t create( const h5::fd_t& fd, const std::string& dataset_path, args_t&&... args ) try {
+	h5::ds_t create( const hid_t& fd, const std::string& dataset_path, args_t&&... args ) try {
 		// compile time check of property lists: 
 		using tcurrent_dims = typename arg::tpos<const h5::current_dims_t&,const args_t&...>;
 		using tmax_dims 	= typename arg::tpos<const h5::max_dims_t&,const args_t&...>;

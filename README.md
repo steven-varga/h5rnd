@@ -3,8 +3,7 @@
 
 # usage:
 ```
-steven@io:~/projects/h5rnd$ ./rndt --help
-Usage: rndt [options] 
+Usage: h5rnd [options] 
 
 Optional arguments:
 -h --help       shows help message and exits
@@ -29,6 +28,12 @@ Optional arguments:
 
 - graphviz
 - xviewer
+
+```
+h5rnd --graphviz -o tree.gv -d 30 -g 11  # create a graphviz output
+dot -Tsvg tree.gv -o tree.svg            # convert `dot` file to `svg`
+xviewer -wf  tree.svg                    # view it on screen
+```
 
 # bugs
 use the included/shipped **h5cpp** header files until I update the original **h5cpp** distribution with `h5::gr_t` support for `read|write|create` operators.
