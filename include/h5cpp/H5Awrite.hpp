@@ -29,7 +29,7 @@ namespace h5 {
 		h5::current_dims_t current_dims = impl::size( ref );
 		using element_t = typename impl::decay<T>::type;
 		h5::at_t attr = ( H5Aexists(static_cast<hid_t>(parent), name.c_str() ) > 0 ) ?
-			h5::open(parent, name, h5::default_acpl) : h5::create<element_t>(parent, name, current_dims);
+			h5::aopen(parent, name, h5::default_acpl) : h5::acreate<element_t>(parent, name, current_dims);
 		h5::awrite(attr, &ref[0] );
 		return attr;
 	}
@@ -41,7 +41,7 @@ namespace h5 {
 		h5::current_dims_t current_dims = impl::size( ref );
 		using element_t = typename impl::decay<T>::type;
 		h5::at_t attr = ( H5Aexists(static_cast<hid_t>(parent), name.c_str() ) > 0 ) ?
-			h5::open(parent, name, h5::default_acpl) : h5::create<element_t>(parent, name, current_dims);
+			h5::aopen(parent, name, h5::default_acpl) : h5::acreate<element_t>(parent, name, current_dims);
 		h5::awrite(attr, impl::data(ref) );
 		return attr;
 	}
@@ -56,7 +56,7 @@ namespace h5 {
 		using element_t = typename impl::decay<std::initializer_list<T>>::type;
 
 		h5::at_t attr = ( H5Aexists(static_cast<hid_t>(parent), name.c_str() ) > 0 ) ?
-			h5::open(parent, name, h5::default_acpl) : h5::create<element_t>(parent, name, current_dims);
+			h5::aopen(parent, name, h5::default_acpl) : h5::acreate<element_t>(parent, name, current_dims);
 		h5::awrite<element_t>(attr, impl::data( ref ) );
 		return attr;
 	} catch( const std::runtime_error& err ){
@@ -69,7 +69,7 @@ h5::at_t h5::ds_t::operator[]( const char name[] ){
 	//we don't have the object parameters yet available the only thing to do is 
 	//mark it H5I_UNINIT and in the second phase create the attribute 
 	h5::at_t attr = ( H5Aexists(static_cast<hid_t>(*this), name ) > 0 ) ?
-			h5::open(static_cast<hid_t>( *this ), name, h5::default_acpl) : h5::at_t{H5I_UNINIT};
+			h5::aopen(static_cast<hid_t>( *this ), name, h5::default_acpl) : h5::at_t{H5I_UNINIT};
 	attr.ds   = static_cast<hid_t>(*this);
 	attr.name = std::string(name);
 	return attr;

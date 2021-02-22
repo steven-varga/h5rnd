@@ -180,7 +180,7 @@ namespace h5 {
 				H5Pset_chunk(static_cast<::hid_t>(dcpl), chunk.rank, *chunk ), std::runtime_error,	 h5::error::msg::set_chunk );
 	}
 	template<class T>
-	inline h5::ds_t createds(const h5::fd_t& fd, const std::string& path, const h5::dt_t<T>& type,
+	inline h5::ds_t createds(const hid_t& fd, const std::string& path, const h5::dt_t<T>& type,
 		  const h5::sp_t& sp, const h5::lcpl_t& lcpl, const h5::dcpl_t& dcpl, const h5::dapl_t& dapl ){
 		hid_t ds;
 		H5CPP_CHECK_NZ(( ds = H5Dcreate2( static_cast<hid_t>(fd), path.data(), type, static_cast<hid_t>(sp),

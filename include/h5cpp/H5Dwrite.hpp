@@ -102,7 +102,7 @@ namespace h5 {
 	*  \par_file_path \par_dataset_path \par_ref \par_offset \par_count \par_dxpl \tpar_T \returns_herr 
  	*/ 
 	template <class T, class... args_t>
-	h5::ds_t write( const h5::fd_t& fd, const std::string& dataset_path, const T* ptr,  args_t&&... args  ){
+	h5::ds_t write( const hid_t& fd, const std::string& dataset_path, const T* ptr,  args_t&&... args  ){
 
 		using tcount  = typename arg::tpos<const h5::count_t&,const args_t&...>;
 		using toffset = typename arg::tpos<const h5::offset_t&,const args_t&...>;

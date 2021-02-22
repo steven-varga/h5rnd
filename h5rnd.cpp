@@ -2,8 +2,8 @@
 copyright steven varga, 2021, feb 18, Toronto, ON, Canada;  MIT license
 */
 
-#include "argparse.h"
-#include <h5cpp/all>
+#include "include/argparse.h"
+#include "include/h5cpp/all"
 
 #include <string>
 #include <random>
@@ -113,16 +113,18 @@ int main(int argc, char **argv) {
             auto names = h5::utils::get_test_data<std::string>(prufer_sequence.size()+2);
             std::vector<h5::gr_t> gr(is_group.size());
             std::vector<double> dataset(1000);
+
             gr[root] = h5::gr_t{H5Gopen(fd, "/", H5P_DEFAULT)}; // using H5CPP RAII
             for(auto it = std::end(edges); it != std::begin(edges); ) {
                 it--;
                 // we can use CAPI routins to test, or just compare gr_t >= 0
-                if( is_group[it->second] && !H5Iis_valid(gr[it->second])) 
-                    gr[it->second] = h5::gr_t{H5Gcreate(gr[it->first], names[it->second].data(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT)};
-                else // it is a leaf node, create a dataset
-                    ;//h5::write()
-                std::cout <<" " << it->first <<" "<< it->second << "} " << gr[it->first] <<" " << names[it->first] <<" " << names[it->second] <<"\n";
-            
+                if( is_group[it->second]) {
+                    if(!H5Iis_valid(gr[it->second]))  gr[it->second] = h5::gr_t{
+                    H5Gcreate(gr[it->first], names[it->second].data(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT)};
+                } else { // it is a leaf node, create a dataset
+                    auto ds = h5::create<double>(gr[it->first], names[it->second], h5::current_dims{1000});
+                    ds["attribute"] = {1,2,3,4,5};
+                }
             }
             
         }

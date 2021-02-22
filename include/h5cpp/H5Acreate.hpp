@@ -21,7 +21,7 @@ namespace h5 {
 
 	template<class T, class HID_T, class... args_t> 
 	inline typename std::enable_if<h5::impl::is_valid_attr<HID_T>::value,
-	h5::at_t>::type create( const HID_T& parent, const std::string& path, args_t&&... args ){
+	h5::at_t>::type acreate( const HID_T& parent, const std::string& path, args_t&&... args ){
 		try {
 			// compile time check of property lists: 
 			using tcurrent_dims = typename arg::tpos<const h5::current_dims_t&,const args_t&...>;
