@@ -39,18 +39,6 @@ edge_t prufer2edges(const degree_t& a){
 
     return T;
 }
-/*
-void topoolical_sort(const edge_t& edges){
-    edge_t L, S;
-    std::copy(std::begin(edges), std::end(edges), std::begin(S));
-
-    for(auto e: S){
-        L.push_back(e);
-        for 
-
-    }
-}
-*/
 
 int main(int argc, char **argv) {
     argparse::ArgumentParser arg("rndt", "0.0.1");
@@ -115,18 +103,20 @@ int main(int argc, char **argv) {
             std::vector<double> dataset(1000);
 
             gr[root] = h5::gr_t{H5Gopen(fd, "/", H5P_DEFAULT)}; // using H5CPP RAII
-            for(auto it = std::end(edges); it != std::begin(edges); ) {
+            for(auto it = std::end(edges); it != std::begin(edges); ){
                 it--;
                 // we can use CAPI routins to test, or just compare gr_t >= 0
                 if( is_group[it->second]) {
-                    if(!H5Iis_valid(gr[it->second]))  gr[it->second] = h5::gr_t{
-                    H5Gcreate(gr[it->first], names[it->second].data(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT)};
+                    if(!H5Iis_valid(gr[it->second])){
+                        auto gr_ = h5::gr_t{H5Gcreate(gr[it->first], names[it->second].data(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT)}; 
+                        h5::awrite(gr_, "group attribute", "hello");
+                        gr[it->second] = gr_;                            ;
+                    }
                 } else { // it is a leaf node, create a dataset
                     auto ds = h5::create<double>(gr[it->first], names[it->second], h5::current_dims{1000});
-                    ds["attribute"] = {1,2,3,4,5};
+                    ds["attribute"] = {1,2,3,4,5}; // FIXME: expand with random attributes
                 }
             }
-            
         }
 
         
