@@ -10,6 +10,11 @@ test: h5rnd
 	./h5rnd --graphviz --hdf5 -o tree.h5 -d 13 -g 7
 	dot -Tsvg tree.gv -o tree.svg
 	xviewer -wf  tree.svg&
+
+test-size: h5rnd
+	./h5rnd --size 2048kb -o tree.h5 -d 13 -g 7
+
+
 %.o : %.cpp 
 	$(CXX) -o $@  $(CPPFLAGS) $(CXXFLAGS) -c $^
 

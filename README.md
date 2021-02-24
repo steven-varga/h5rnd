@@ -17,6 +17,68 @@ Optional arguments:
 
 ![example output](images/tree.svg)
 
+HDF5 container `h5ls -r tree.h5`
+```
+/                        Group
+/AkWTsmZmlndfbRhKWywY    Dataset {1000}
+/luSQtFEs                Group
+/luSQtFEs/EcdhmBaFpNoplYIqUGHuVZj Group
+/luSQtFEs/EcdhmBaFpNoplYIqUGHuVZj/ORmqQLNnWtDSQhfexAyrczVolGPY Dataset {1000}
+/luSQtFEs/pOnCmrTKREyihDZBHmDyJDpiLv Group
+/luSQtFEs/pOnCmrTKREyihDZBHmDyJDpiLv/BtuejM Dataset {1000}
+/luSQtFEs/pOnCmrTKREyihDZBHmDyJDpiLv/YSdbCOyP Group
+/luSQtFEs/pOnCmrTKREyihDZBHmDyJDpiLv/YSdbCOyP/DNrnKgcxo Group
+/luSQtFEs/pOnCmrTKREyihDZBHmDyJDpiLv/YSdbCOyP/DNrnKgcxo/CudEjqyaFtBGqcrFenMUhA Dataset {1000}
+/luSQtFEs/pOnCmrTKREyihDZBHmDyJDpiLv/YSdbCOyP/VDorTtsiEIwtZ Dataset {1000}
+/luSQtFEs/pOnCmrTKREyihDZBHmDyJDpiLv/YSdbCOyP/fuLsrYEurcvdOXWickWKFXLyMGY Dataset {1000}
+/luSQtFEs/pOnCmrTKREyihDZBHmDyJDpiLv/qyHzilzoCyZlTaMcqZQ Dataset {1000}
+/luSQtFEs/pOnCmrTKREyihDZBHmDyJDpiLv/wfXkhrapzAB Dataset {1000}
+/luSQtFEs/yGnBRCmSxyrPv  Group
+/luSQtFEs/yGnBRCmSxyrPv/bZPYDqZmhSXwunlyCwGMLu Group
+/luSQtFEs/yGnBRCmSxyrPv/bZPYDqZmhSXwunlyCwGMLu/PnHPAPgjWqfkhBHeR Dataset {1000}
+/luSQtFEs/yGnBRCmSxyrPv/bZPYDqZmhSXwunlyCwGMLu/QmNJYWKrrEXsqVxDAqkFQRPVHwaD Dataset {1000}
+/luSQtFEs/yGnBRCmSxyrPv/rtaEOCMRrqKzAcRBEHQjFQ Dataset {1000}
+/snWTGjtKQva             Dataset {1000}
+/zzxgLfDdtDtViDnSLtrEzVpYKVZzr Dataset {1000}
+```
+
+graphviz: `cat tree.gv` sets defaults for *dataset*s, then lists the *folder*s, use `dot` directed graph for rendering, **see:** `Makefile` for details
+```
+digraph prufer {
+	node [shape=note color=orange fontcolor=purple fontname="times bold" fillcolor=violet width=0.01 height=0.1 fontsize=9.0 labelloc=b style=bold];
+	1 [shape=folder color=purple weight=2.0 width=0.75 height=0.5 fontsize=14.0 labelloc=c]
+	2 [shape=folder color=purple weight=2.0 width=0.75 height=0.5 fontsize=14.0 labelloc=c]
+	3 [shape=folder color=purple weight=2.0 width=0.75 height=0.5 fontsize=14.0 labelloc=c]
+	4 [shape=folder color=purple weight=2.0 width=0.75 height=0.5 fontsize=14.0 labelloc=c]
+	5 [shape=cylinder color=purple fillcolor=orange style=filled label=HDF5 weight=2.0 width=0.75 height=0.5 fontsize=14.0 labelloc=c]
+	6 [shape=folder color=purple weight=2.0 width=0.75 height=0.5 fontsize=14.0 labelloc=c]
+	7 [shape=folder color=purple weight=2.0 width=0.75 height=0.5 fontsize=14.0 labelloc=c]
+	8 [shape=folder color=purple weight=2.0 width=0.75 height=0.5 fontsize=14.0 labelloc=c]
+
+6 -> 0;
+2 -> 9;
+1 -> 2;
+4 -> 10;
+3 -> 4;
+7 -> 11;
+1 -> 12;
+6 -> 13;
+8 -> 14;
+8 -> 15;
+7 -> 8;
+3 -> 7;
+5 -> 16;
+5 -> 17;
+6 -> 18;
+1 -> 19;
+6 -> 1;
+3 -> 6;
+5 -> 3;
+5 -> 20;
+}
+```
+
+
 # requirements:
 
 - [h5cpp v1.10.6-2](http://h5cpp.org) included with this project
@@ -35,5 +97,7 @@ dot -Tsvg tree.gv -o tree.svg            # convert `dot` file to `svg`
 xviewer -wf  tree.svg                    # view it on screen
 ```
 
-# bugs
-use the included/shipped **h5cpp** header files until I update the original **h5cpp** distribution with `h5::gr_t` support for `read|write|create` operators.
+# known bugs:
+- data size should allow a range for random values
+- in addition to random strings, should pick values from dictionary: `/usr/share/dict/words`
+- use the included/shipped **h5cpp** header files until I update the original **h5cpp** distribution with `h5::gr_t` support for `read|write|create` operators.

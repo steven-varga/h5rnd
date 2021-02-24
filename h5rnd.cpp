@@ -11,6 +11,8 @@ copyright steven varga, 2021, feb 18, Toronto, ON, Canada;  MIT license
 #include <algorithm>
 #include <fstream>
 #include <iterator>
+#include <regex>
+
 
 using edge_t = std::vector<std::pair<unsigned,unsigned>>;
 using degree_t = std::vector<unsigned>;
@@ -48,6 +50,15 @@ int main(int argc, char **argv) {
         .default_value(100).action([](const std::string& value) { return std::stoi(value); });
     arg.add_argument("-g", "--groups").help("number of groups")
         .default_value(10).action([](const std::string& value) { return std::stoi(value); });
+    arg.add_argument("-s", "--size").help("dataset size: [1-9][0-9]*[(b|mb|gb)?")
+        .action([&](const std::string& value) -> std::string {
+            std::regex rx("[0-9][0-9]*(kb|KB|mb|MB|gb|GB)?",
+                std::regex_constants::ECMAScript | std::regex_constants::icase);
+            if (std::regex_search(value, rx)) {
+                std::cout << "Text contains the phrase 'regular expressions'\n";
+            }
+            return "-------"; 
+        });
     arg.add_argument("--hdf5").help("flag for HDF5 output")
         .default_value(false).implicit_value(true);
     arg.add_argument("--graphviz").help("flag for graphviz output")
@@ -59,6 +70,8 @@ int main(int argc, char **argv) {
 
         int ngroups = arg.get<int>("--groups") + 1; // compensate for root group
         int ndatasets = arg.get<int>("--data-sets");
+
+        //std::cout <<"[ " << arg.get<std::string>("--size") << " ]\n\n";
 
         std::random_device rd;
         std::mt19937 src(rd());

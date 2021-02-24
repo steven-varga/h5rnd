@@ -1,0 +1,33 @@
+digraph prufer {
+	node [shape=note color=orange fontcolor=purple fontname="times bold" fillcolor=violet width=0.01 height=0.1 fontsize=9.0 labelloc=b style=bold];
+	1 [shape=folder color=purple weight=2.0 width=0.75 height=0.5 fontsize=14.0 labelloc=c]
+	2 [shape=folder color=purple weight=2.0 width=0.75 height=0.5 fontsize=14.0 labelloc=c]
+	3 [shape=folder color=purple weight=2.0 width=0.75 height=0.5 fontsize=14.0 labelloc=c]
+	4 [shape=folder color=purple weight=2.0 width=0.75 height=0.5 fontsize=14.0 labelloc=c]
+	5 [shape=cylinder color=purple fillcolor=orange style=filled label=HDF5 weight=2.0 width=0.75 height=0.5 fontsize=14.0 labelloc=c]
+	6 [shape=folder color=purple weight=2.0 width=0.75 height=0.5 fontsize=14.0 labelloc=c]
+	7 [shape=folder color=purple weight=2.0 width=0.75 height=0.5 fontsize=14.0 labelloc=c]
+	8 [shape=folder color=purple weight=2.0 width=0.75 height=0.5 fontsize=14.0 labelloc=c]
+
+
+6 -> 0;
+2 -> 9;
+1 -> 2;
+4 -> 10;
+3 -> 4;
+7 -> 11;
+1 -> 12;
+6 -> 13;
+8 -> 14;
+8 -> 15;
+7 -> 8;
+3 -> 7;
+5 -> 16;
+5 -> 17;
+6 -> 18;
+1 -> 19;
+6 -> 1;
+3 -> 6;
+5 -> 3;
+5 -> 20;
+}
