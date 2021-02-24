@@ -1,5 +1,5 @@
 # **h5rnd**
-**A random HDF5 container generator based on prufer sequence.** In development often the need arises to have a complex HDF5 dataset with atributes and certain properties to test, measure some charaterestics of an software package. A real life dataset may be overly restritive in licensing or size, possibly diverting attenting focus from the main work -- **h5rnd** fills in this gap by providing scalable random datasets, with preditive characteristics for serieal and parallel HDF5.
+**A random HDF5 container generator based on Prüfer sequence.** In development often the need arises for a complex HDF5 dataset with atributes and certain properties to test, measure some charaterestics of a software package. A real life dataset may be restritive in licensing or size, possibly diverting focus from the main work -- **h5rnd** fills in this gap by providing scalable random datasets, with predictive characteristics for serial and parallel HDF5.
 
 # usage:
 ```
@@ -21,7 +21,7 @@ Optional arguments:
 
 - [h5cpp v1.10.6-2](http://h5cpp.org) included with this project
 - [argparse](https://github.com/p-ranav/argparse)  included with this project
-- HDF5 C base library, no high level API or beuilt in C++ API is needed works with:  `serial|parallel`
+- HDF5 C base library, no high level API or built in C++ API is needed works with:  `serial|parallel`
 - c++17 or higher compiler
 
 **visualization:**
